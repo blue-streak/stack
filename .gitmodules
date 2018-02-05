@@ -1,0 +1,15 @@
+[submodule "entry"]
+	path = entry
+	url = git@github.com:blue-streak/entry.git
+[submodule "pwa-fe"]
+	path = pwa-fe
+	url = git@github.com:blue-streak/pwa-fe.git
+[submodule "graphql-api"]
+	path = graphql-api
+	url = git@github.com:blue-streak/graphql-api.git
+[submodule "php"]
+	path = php
+	url = git@github.com:blue-streak/php.git
+[submodule "magento"]
+	path = magento
+	url = git@github.com:blue-streak/magento.git
