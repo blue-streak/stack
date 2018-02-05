@@ -1,0 +1,71 @@
+version: '2'
+services:
+  pwa:
+    image: dockercloud/hello-world:latest
+    environment:
+      - VIRTUAL_HOST=https://pwa.m2
+
+  mage:
+    image: dockercloud/hello-world:latest
+    environment:
+      - VIRTUAL_HOST=https://shop.pwa.m2
+
+  lb:
+    image: dockercloud/haproxy
+    links:
+      - pwa
+      - mage
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      DEFAULT_SSL_CERT: |
+        -----BEGIN PRIVATE KEY-----
+        MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCsaRoQIUD6jO+B
+        8Znq6lGSJ1CBhXW4bKSXM9NVCTdMQO6x8QXzQPHgG5K9MEhHmzRoM5TCKGqVVsf/
+        9tAqgs5qrhRmeuuP4DHI41O9awNj/eVKRN4ZiLogfWIdy4auMpv8rycqL9/AeLG+
+        Q9cW3pcWDW9emUqjDquUDybqoFGwkiij57zILleRUqG2m66yVZu+yOaHoAxJxeOe
+        tMv9fqflsmTqaifvCZKto5GUVpnhuLZNDZJNgb01s11l8uFUDfd0nwqgNQMi9CqI
+        U6svHtnxo/vcRLQQ1VzTjUsDXlVm4lnAX0QMz3D4zCrR0TdAglkM2CL5a/DZJKUW
+        RcSXyCUDAgMBAAECggEAMMggHrY5+2pLDho88ZHQ+Kh1B+CqGT9sJnf8cJAF/GZW
+        4zQN+fDDPySuFSeHG/OXFXCaw4DJ/20pc4vzBEQ0gUy16vUWl4PYsj1X4T1ZHT6m
+        VKg9qz3bY/v1+fYvKjSZnBo226HmDkBYEjyBrC/Y0d2FSF/ZFV++Pks3OKWZ13pb
+        9sZQDo230UuDk5igMcf3mHMgHCe6RA7G8AaiILrmsIN7k4TjVhrMvrIBF/O2Z0NX
+        omXKqgAylQBdcxPK7riJjwMxTZ6JznrbybvSKOJv9/5qpyMtPbXIcrDafLlEbBlt
+        YicmAtXEyrMsvFq759iIj+GS3z9Bws1/jRHaJr8aIQKBgQDlu8Plms390vR+UaxU
+        SQVkpTBrY/W4wHbQMdBxJq53Az7sMEdvqAUcNpcnspcnp9X2JJEk1JHg7iyam0iH
+        vPon8oOUstMqBflDe3OjBL9aOLWgKpmTEZBEdygW5a0ia6WrhsAhM0BHToZf01dz
+        hMFNGpFkOvnSHJmlQ8OX8MsHswKBgQDAH4LTj96j8wg2ipSY2WLckeccX27DM0HP
+        Abzavo5fh0oRIPRVoqwC6vqUWVJ1bexRxV5ird6/Qciw4SbSjI0I9c2JYdX9b5Wi
+        OHAKh8ZFXApqlTCHU7EU4BWORfsSWnUVjZg7ImbCK7c+GVzdlWVJvDYOroMdZYII
+        1GFpC0/FcQKBgQDOCI+wJB4KPl+3ylfbX4HOuberGIMPpszn+0UNtbtSUT7lZIcs
+        xGuQ2gTGPY0Cq6tgjXr+pQYPzIuEPS/XTMytdvo7KgXn8mOS+ezDj0ZuC94YPxxs
+        oZvZS2RQ5LtZ22FBbCBzphtH2Ez7M/eCStVx6Rnr4lia77t8VEHeyr3LsQKBgE2O
+        aumsslvMyAv8dXAekWIpI/q4K6ZxEqfWM766Hg9CNgwkGX5YZMfow68PP9JXxYZc
+        /nUnazwZ+kItIdbtFiH/2DEVZaUhXm5WCiS2Grv1I99SynxWtK2QqCL+7RPDoHBK
+        8KEuifzoWNigtHRe0rypVckneZZsW8nksk4NWu6BAoGBALLCku1qXBOUW0/OtJ00
+        aSOfeiN/qm/nSTiL44Id62+YhryAiyie1OO0dYJCfCzU3+g/nARwkUK29f5YcCTA
+        0srUxPIXkU7sdLQM3sdAT7tKWQJalCKm7YDBTVZOIccO4a4godx5X7xE1nVq3Dfe
+        GodNg7uWqMKDN3rLfMzW+qGj
+        -----END PRIVATE KEY-----
+        -----BEGIN CERTIFICATE-----
+        MIIC7DCCAdQCCQDyOBWLwOjsvzANBgkqhkiG9w0BAQsFADA4MQowCAYDVQQDDAEq
+        MR0wGwYDVQQKDBRNeSBDb21wYW55IE5hbWUgTFRELjELMAkGA1UEBhMCVVMwHhcN
+        MTgwMjA1MTgxMDA2WhcNMjEwMTIwMTgxMDA2WjA4MQowCAYDVQQDDAEqMR0wGwYD
+        VQQKDBRNeSBDb21wYW55IE5hbWUgTFRELjELMAkGA1UEBhMCVVMwggEiMA0GCSqG
+        SIb3DQEBAQUAA4IBDwAwggEKAoIBAQCsaRoQIUD6jO+B8Znq6lGSJ1CBhXW4bKSX
+        M9NVCTdMQO6x8QXzQPHgG5K9MEhHmzRoM5TCKGqVVsf/9tAqgs5qrhRmeuuP4DHI
+        41O9awNj/eVKRN4ZiLogfWIdy4auMpv8rycqL9/AeLG+Q9cW3pcWDW9emUqjDquU
+        DybqoFGwkiij57zILleRUqG2m66yVZu+yOaHoAxJxeOetMv9fqflsmTqaifvCZKt
+        o5GUVpnhuLZNDZJNgb01s11l8uFUDfd0nwqgNQMi9CqIU6svHtnxo/vcRLQQ1VzT
+        jUsDXlVm4lnAX0QMz3D4zCrR0TdAglkM2CL5a/DZJKUWRcSXyCUDAgMBAAEwDQYJ
+        KoZIhvcNAQELBQADggEBAH3y+9kW2nJva7xV+WrdP8b6pgQNvD717uXHIcOI5f9j
+        l3CD1p03l9Dz0ZyjA4dH42saQjmHP1AezFqARDLRxfbyGtAtLMZ2jjS1BO5XMnx7
+        OtM+6O0ukLrLKU9bLCtf9gwx9Iaq18Cvm2QWRjeKybXRQgMStDOdCVL0y/8mkyIv
+        kzTlszpTmkzV7S/jyUQFe7cEf+scx650QP9G7hOuebfA8l8anHPx2icqnJNqdllN
+        WbkWcTlbEQTSJfwAj6ARORtGPv4Gv6U/oOlmV3ANStXK1nApJog09yJbcEZpgJ+X
+        +KshB+cip5wHU+94UArgziUg3kvVZA1z84SGvn0SCK0=
+        -----END CERTIFICATE-----
+
