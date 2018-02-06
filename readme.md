@@ -8,7 +8,7 @@
 git submodule update --init
 ```
 
-### 2. Copy `local.env.example` -> local.env & update the 
+### 2. Copy `local.env.example` -> `local.env` & update the 
 host/user/password to match a magento store you have an admin password for.
  
 ```bash
