@@ -2,14 +2,14 @@
 
 ## To run graphql + PWA locally, with a LIVE magento store:
 
-### 1. Install git submodules**
+### 1. Install git submodules
 
 ```bash
 git submodule update --init
 ```
 
-### 2. Copy `local.env.example` -> `local.env` & update the 
-host/user/password to match a magento store you have an admin password for.
+### 2. Copy `local.env.example` -> `local.env` 
+Here you can update the host/user/password to match a magento store you have an admin password for.
  
 ```bash
 cp local.env.example local.env
