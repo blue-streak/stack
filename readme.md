@@ -37,3 +37,19 @@ will be built/downloaded.
 You can now access:
  - graphql UI: http://0.0.0.0:8001/graphql
  - pwa: https://pwa.m2
+ 
+---
+ 
+# Working with git submodules
+
+ - I cloned the repo, but the submodule folders are empty 
+ 
+    ```bash
+    git submodule update --init
+    ```
+
+ - How do I pull the latest commits from *all* submodules?
+ 
+    ```bash
+    git submodule update --recursive --remote
+    ```
