@@ -39,10 +39,13 @@ services:
       - VIRTUAL_HOST=https://shop.pwa.m2
 
   php:
-    image: bluestreak/magento:1
-#    build:
-#      context: ./magento
+#    image: bluestreak/magento:travis-4
+    build:
+      context: ./magento
     working_dir: /var/www
+#    volumes:
+#      - ./magento/app/code:/var/www/app/code
+#      - ./magento/app/design:/var/www/app/design
     ports:
       - '9000'
     depends_on:
@@ -53,6 +56,11 @@ services:
       - MYSQL_PASSWORD=docker
       - MYSQL_ROOT_PASSWORD=docker
       - MYSQL_USER=docker
+
+      - MAGE_HOST=https://shop.pwa.m2
+      - MAGE_ADMIN_USER=admin
+      - MAGE_ADMIN_PASS=password123
+
       - PHP_MEMORY_LIMIT=3G
       - VIRTUAL_HOST=https://shop.pwa.m2
 
