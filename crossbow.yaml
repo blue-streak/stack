@@ -1,0 +1,70 @@
+env:
+  PHP: docker-compose exec --user www-data php
+  MAGE: docker-compose exec --user www-data php ./bin/magento
+  THEME: Magento/luma
+
+tasks:
+  build:
+    - wipe-pub
+    - cache
+    - deploy
+    - bundle
+    - workbox
+
+  workbox:
+    adaptor: sh
+    command: |
+      $PHP workbox injectManifest pub/static/frontend/Magento/luma/en_GB/Jh_Offline/workbox-cli-config.js
+
+  wipe-pub:
+    adaptor: sh
+    command: |
+      $PHP rm -rf pub/static
+
+  cache:
+    adaptor: sh
+    command: |
+      $MAGE cache:flush
+      $MAGE setup:upgrade
+
+  deploy:
+    adaptor: sh
+    command: |
+      $MAGE setup:static-content:deploy en_GB -f --theme ${THEME}
+
+  (cp):
+    pub:
+      tasks:
+        - '@sh mkdir -p magento/pub'
+        - adaptor: sh
+          command: |
+            rm -rf magento/pub/**
+            docker cp $(docker-compose ps -q php):/var/www/pub/. magento/pub/.
+
+  bundle:
+    adaptor: sh
+    command: >
+      $PHP m2-builder build
+      --config pub/static/frontend/${THEME}/en_GB/Jh_Build/config.json
+
+  revert:
+    adaptor: sh
+    command: >
+      $PHP m2-builder build
+      --config pub/static/frontend/${THEME}/en_GB/Jh_Build/config.json
+
+  php:
+    adaptor: sh
+    command: $PHP $CB_CLI_TRAILING
+
+  mage:
+    adaptor: sh
+    command: $MAGE $CB_CLI_TRAILING
+
+  open:
+    adaptor: sh
+    command: >
+      /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+      --user-data-dir=/tmp/foo
+      --ignore-certificate-errors
+      --unsafely-treat-insecure-origin-as-secure=https://shop.pwa.m2
